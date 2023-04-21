@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Embeddable
 public class Localisation {
 
-    @Column(name = "STREET", nullable = false, length = 100)
+    @Column(name = "ADRESSE", nullable = false, length = 100)
     private String street;
     @ManyToOne
     @JoinColumn(name = "FK_VILL")

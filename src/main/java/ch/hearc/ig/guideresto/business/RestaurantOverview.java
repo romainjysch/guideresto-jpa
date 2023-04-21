@@ -35,4 +35,16 @@ public class RestaurantOverview implements IAmRestaurant {
   public String getZipCode() {
     return zipCode;
   }
+
+  @Override
+  public String toString() {
+    return "RestaurantOverview{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", street='" + street + '\'' +
+            ", zipCode='" + zipCode + '\'' +
+            ", cityName='" + cityName + '\'' +
+            '}';
+  }
+
 }
