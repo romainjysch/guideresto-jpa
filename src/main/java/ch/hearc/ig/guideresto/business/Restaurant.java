@@ -1,18 +1,35 @@
 package ch.hearc.ig.guideresto.business;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name = "RESTAURANTS")
 public class Restaurant implements IAmRestaurant {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_RESTAURANTS")
+    @SequenceGenerator(name = "SEQ_RESTAURANTS", sequenceName = "SEQ_RESTAURANTS", initialValue = 1, allocationSize = 1)
+    @Column(name="NUMERO", nullable = false, length = 10)
     private Integer id;
+    @Column(name="NOM", nullable = false, length = 100)
     private String name;
+    @Column(name="DESCRIPTION", nullable = false)
+    @Lob
     private String description;
+    @Column(name="SITE_WEB", nullable = false, length = 100)
     private String website;
+    @Transient
     private Set<Evaluation> evaluations;
+    @Embedded
     private Localisation address;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_TYPE")
     private RestaurantType type;
+
+    public Restaurant() {}
 
     public Restaurant(Integer id, String name, String description, String website, String street, City city, RestaurantType type) {
         this.id = id;

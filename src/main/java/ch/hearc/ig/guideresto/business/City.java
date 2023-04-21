@@ -20,9 +20,7 @@ public class City {
     @Transient
     private Set<Restaurant> restaurants;
 
-    public City() {
-
-    }
+    public City() {}
 
     public City(Integer id, String zipCode, String cityName) {
         this.id = id;
