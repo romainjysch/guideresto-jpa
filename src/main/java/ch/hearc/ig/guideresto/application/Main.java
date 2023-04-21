@@ -1,5 +1,7 @@
 package ch.hearc.ig.guideresto.application;
 
+import ch.hearc.ig.guideresto.business.BasicEvaluation;
+import ch.hearc.ig.guideresto.business.Evaluation;
 import ch.hearc.ig.guideresto.business.Restaurant;
 import ch.hearc.ig.guideresto.business.RestaurantOverview;
 import ch.hearc.ig.guideresto.presentation.CLI;
@@ -31,6 +33,7 @@ public class Main {
     try {
       em = emf.createEntityManager();
       em.getTransaction().begin();
+      // Show restaurant :
       Restaurant retrievedRestaurant = em.find(Restaurant.class, 2);
       RestaurantOverview restaurantOverview = new RestaurantOverview(
               retrievedRestaurant.getId(),
@@ -39,6 +42,9 @@ public class Main {
               retrievedRestaurant.getZipCode(),
               retrievedRestaurant.getCityName());
       System.out.println(restaurantOverview.toString());
+      // Show like :
+      Evaluation like = em.find(Evaluation.class, 8);
+      System.out.println(like);
       em.getTransaction().commit();
     } catch (Exception e) {
       if(em!=null) {

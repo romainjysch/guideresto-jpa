@@ -1,11 +1,18 @@
 package ch.hearc.ig.guideresto.business;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "LIKES")
 public class BasicEvaluation extends Evaluation {
 
+  @Column(name = "APPRECIATION", nullable = false, length = 1)
   private boolean likeRestaurant;
+  @Column(name = "ADRESSE_IP", nullable = false, length = 100)
   private String ipAddress;
+
+  public BasicEvaluation() {}
 
   public BasicEvaluation(Integer id, LocalDate visitDate, Restaurant restaurant, boolean likeRestaurant,
       String ipAddress) {
@@ -21,4 +28,13 @@ public class BasicEvaluation extends Evaluation {
   public String getIpAddress() {
     return ipAddress;
   }
+
+  @Override
+  public String toString() {
+    return super.toString() + " BasicEvaluation{" +
+            "likeRestaurant=" + likeRestaurant +
+            ", ipAddress='" + ipAddress + '\'' +
+            '}';
+  }
+
 }

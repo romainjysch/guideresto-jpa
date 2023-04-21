@@ -25,7 +25,7 @@ public class Restaurant implements IAmRestaurant {
     private Set<Evaluation> evaluations;
     @Embedded
     private Localisation address;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "FK_TYPE")
     private RestaurantType type;
 
