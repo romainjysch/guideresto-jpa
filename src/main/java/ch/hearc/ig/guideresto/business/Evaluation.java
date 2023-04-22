@@ -5,8 +5,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@MappedSuperclass
 public abstract class Evaluation {
 
   @Id
@@ -67,10 +66,16 @@ public abstract class Evaluation {
 
   @Override
   public String toString() {
+    RestaurantOverview restaurantOverview = new RestaurantOverview(
+            restaurant.getId(),
+            restaurant.getName(),
+            restaurant.getStreet(),
+            restaurant.getZipCode(),
+            restaurant.getCityName());
     return "Evaluation{" +
             "id=" + id +
             ", visitDate=" + visitDate +
-            ", restaurant=" + restaurant +
+            ", restaurant=" + restaurantOverview +
             '}';
   }
 
