@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "LIKES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Evaluation {
 

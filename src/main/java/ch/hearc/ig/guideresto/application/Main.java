@@ -43,7 +43,7 @@ public class Main {
               retrievedRestaurant.getCityName());
       System.out.println(restaurantOverview.toString());
       // Show like :
-      Evaluation like = em.find(Evaluation.class, 8);
+      BasicEvaluation like = em.find(BasicEvaluation.class, 8);
       System.out.println(like);
       em.getTransaction().commit();
     } catch (Exception e) {
