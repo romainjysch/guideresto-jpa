@@ -1,9 +1,6 @@
 package ch.hearc.ig.guideresto.application;
 
-import ch.hearc.ig.guideresto.business.BasicEvaluation;
-import ch.hearc.ig.guideresto.business.Evaluation;
-import ch.hearc.ig.guideresto.business.Restaurant;
-import ch.hearc.ig.guideresto.business.RestaurantOverview;
+import ch.hearc.ig.guideresto.business.*;
 import ch.hearc.ig.guideresto.presentation.CLI;
 import ch.hearc.ig.guideresto.service.RestaurantService;
 
@@ -33,6 +30,7 @@ public class Main {
     try {
       em = emf.createEntityManager();
       em.getTransaction().begin();
+
       // Show restaurant :
       Restaurant retrievedRestaurant = em.find(Restaurant.class, 2);
       RestaurantOverview restaurantOverview = new RestaurantOverview(
@@ -41,10 +39,39 @@ public class Main {
               retrievedRestaurant.getStreet(),
               retrievedRestaurant.getZipCode(),
               retrievedRestaurant.getCityName());
-      System.out.println(restaurantOverview.toString());
-      // Show like :
+      System.out.println(restaurantOverview);
+      System.out.println();
+
+      // Show City :
+      City city = em.find(City.class, 1);
+      System.out.println(city);
+      System.out.println();
+
+      // Show RestaurantType :
+      RestaurantType restaurantType = em.find(RestaurantType.class, 1);
+      System.out.println(restaurantType);
+      System.out.println();
+
+      // Show BasicEvaluation :
       BasicEvaluation like = em.find(BasicEvaluation.class, 8);
       System.out.println(like);
+      System.out.println();
+
+      // Show CompleteEvaluation :
+      CompleteEvaluation completeEvaluation = em.find(CompleteEvaluation.class,3);
+      System.out.println(completeEvaluation);
+      System.out.println();
+
+      // Show EvaluationCriteria :
+      EvaluationCriteria evaluationCriteria = em.find(EvaluationCriteria.class, 1);
+      System.out.println(evaluationCriteria);
+      System.out.println();
+
+      // Show Grade :
+      Grade grade = em.find(Grade.class, 8);
+      System.out.println(grade);
+      System.out.println();
+
       em.getTransaction().commit();
     } catch (Exception e) {
       if(em!=null) {

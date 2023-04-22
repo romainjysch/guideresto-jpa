@@ -46,4 +46,14 @@ public class CompleteEvaluation extends Evaluation {
   public void setGrades(Set<Grade> grades) {
     this.grades = grades;
   }
+
+  @Override
+  public String toString() {
+    return super.toString() + "CompleteEvaluation{" +
+            "comment='" + comment + '\'' +
+            ", username='" + username + '\'' +
+            ", grades=" + grades +
+            '}';
+  }
+
 }

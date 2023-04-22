@@ -49,4 +49,15 @@ public class RestaurantType {
     public void setRestaurants(Set<Restaurant> restaurants) {
         this.restaurants = restaurants;
     }
+
+    @Override
+    public String toString() {
+        return "RestaurantType{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                ", restaurants=" + restaurants +
+                '}';
+    }
+
 }

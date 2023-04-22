@@ -48,4 +48,15 @@ public class City {
   public int getId() {
     return id;
   }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", zipCode='" + zipCode + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", restaurants=" + restaurants +
+                '}';
+    }
+
 }
