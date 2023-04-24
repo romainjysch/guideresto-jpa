@@ -7,6 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "COMMENTAIRES")
+// Il faudra rajouter quelque chose ici
 public class CompleteEvaluation extends Evaluation {
 
   @Column(name = "COMMENTAIRE", nullable = false)

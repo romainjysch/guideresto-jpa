@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @MappedSuperclass
+// Ce n'est pas exactement MappedSuperclass mais c'est très proche
 public abstract class Evaluation {
 
   @Id

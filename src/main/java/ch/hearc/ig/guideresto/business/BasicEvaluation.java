@@ -5,8 +5,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "LIKES")
+// Il faudra rajouter quelque chose ici
 public class BasicEvaluation extends Evaluation {
 
+    // La gestion du boolean demande un tout petit peu plus que ça
   @Column(name = "APPRECIATION", nullable = false, length = 1)
   private boolean likeRestaurant;
   @Column(name = "ADRESSE_IP", nullable = false, length = 100)
