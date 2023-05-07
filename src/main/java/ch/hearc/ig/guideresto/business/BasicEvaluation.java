@@ -1,11 +1,12 @@
 package ch.hearc.ig.guideresto.business;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "LIKES")
-// Il faudra rajouter quelque chose ici
 public class BasicEvaluation extends Evaluation {
 
     // La gestion du boolean demande un tout petit peu plus que ça

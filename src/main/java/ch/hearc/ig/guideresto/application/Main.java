@@ -25,10 +25,16 @@ public class Main {
   }
 
   private static void show() {
+    // EntityManagerFactory = retourne un DataPool Oracle
+
+    // EntityManager = retourne une Connection
+    // Deux manière de créer un EntityManager
+
+    // Le paramètre match avec le PersistanceUnit dans le fichier .xml QUE CA POUR CE COURS
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("guideRestoPersistenceUnit");
     EntityManager em = null;
     try {
-      em = emf.createEntityManager();
+      em = emf.createEntityManager(); // Crée la Connection
       em.getTransaction().begin();
 
       // Show restaurant :
