@@ -1,6 +1,7 @@
 package ch.hearc.ig.guideresto.business;
 
 import org.hibernate.annotations.ColumnTransformer;
+import utils.BooleanConverter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,8 +10,8 @@ import java.time.LocalDate;
 @Table(name = "LIKES")
 public class BasicEvaluation extends Evaluation {
 
-    // La gestion du boolean demande un tout petit peu plus que ça
   @Column(name = "APPRECIATION", nullable = false, length = 1)
+  @Convert(converter = BooleanConverter.class)
   private boolean likeRestaurant;
   @Column(name = "ADRESSE_IP", nullable = false, length = 100)
   private String ipAddress;
@@ -40,4 +41,6 @@ public class BasicEvaluation extends Evaluation {
             '}';
   }
 
+  public void setLikeRestaurant(boolean b) {
+  }
 }

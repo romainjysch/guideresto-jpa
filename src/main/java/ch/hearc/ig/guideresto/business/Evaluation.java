@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
-@MappedSuperclass
-// Ce n'est pas exactement MappedSuperclass mais c'est très proche
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Evaluation {
 
   @Id

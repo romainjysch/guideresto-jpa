@@ -21,7 +21,7 @@ public class Restaurant implements IAmRestaurant {
     private String description;
     @Column(name="SITE_WEB", nullable = false, length = 100)
     private String website;
-    @Transient
+    @OneToMany(mappedBy = "restaurant")
     private Set<Evaluation> evaluations;
     @Embedded
     private Localisation address;
@@ -97,12 +97,17 @@ public class Restaurant implements IAmRestaurant {
         return id;
     }
 
+    public void setAddress(Localisation address) {
+        this.address = address;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
     public void addEvaluation(Evaluation evaluation) {
-        evaluations.add(evaluation);
+        evaluation.setRestaurant(this);
+        this.getEvaluations().add(evaluation);
     }
 
     @Override

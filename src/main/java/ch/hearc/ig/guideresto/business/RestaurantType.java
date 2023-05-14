@@ -18,7 +18,7 @@ public class RestaurantType {
     @Column(name="DESCRIPTION", nullable = false)
     @Lob
     private String description;
-    @Transient
+    @OneToMany(mappedBy = "type")
     private Set<Restaurant> restaurants;
 
     public RestaurantType() {}
@@ -28,6 +28,11 @@ public class RestaurantType {
         this.label = label;
         this.description = description;
         this.restaurants = new HashSet<>();
+    }
+
+    public void addRestaurant(Restaurant restaurant) {
+        restaurant.setType(this);
+        this.getRestaurants().add(restaurant);
     }
     
     public String getLabel() {

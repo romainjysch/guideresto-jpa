@@ -18,6 +18,11 @@ public class Localisation {
         this.city = city;
     }
 
+    public void addRestaurant(Restaurant restaurant) {
+        restaurant.setAddress(this);
+        this.city.getRestaurants().add(restaurant);
+    }
+
     public String getStreet() {
         return street;
     }

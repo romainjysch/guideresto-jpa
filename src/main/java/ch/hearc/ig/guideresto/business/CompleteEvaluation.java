@@ -7,7 +7,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "COMMENTAIRES")
-// Il faudra rajouter quelque chose ici
 public class CompleteEvaluation extends Evaluation {
 
   @Column(name = "COMMENTAIRE", nullable = false)
@@ -15,7 +14,7 @@ public class CompleteEvaluation extends Evaluation {
   private String comment;
   @Column(name = "NOM_UTILISATEUR", nullable = false, length = 100)
   private String username;
-  @Transient
+  @OneToMany(mappedBy = "evaluation")
   private Set<Grade> grades;
 
   public CompleteEvaluation() {}
@@ -41,7 +40,8 @@ public class CompleteEvaluation extends Evaluation {
   }
 
   public void addGrade(Grade grade) {
-    grades.add(grade);
+    grade.setEvaluation(this);
+    this.getGrades().add(grade);
   }
 
   public void setGrades(Set<Grade> grades) {

@@ -26,10 +26,8 @@ public class Main {
 
   private static void show() {
     // EntityManagerFactory = retourne un DataPool Oracle
-
     // EntityManager = retourne une Connection
-    // Deux manière de créer un EntityManager
-
+    // Deux manières de créer un EntityManager
     // Le paramètre match avec le PersistanceUnit dans le fichier .xml QUE CA POUR CE COURS
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("guideRestoPersistenceUnit");
     EntityManager em = null;
@@ -37,8 +35,20 @@ public class Main {
       em = emf.createEntityManager(); // Crée la Connection
       em.getTransaction().begin();
 
+      // Show City :
+      City city = em.find(City.class, 1);
+      city.setCityName("Chichville");
+      System.out.println(city);
+      System.out.println();
+
+      // Show RestaurantType :
+      RestaurantType restaurantType = em.find(RestaurantType.class, 1);
+      System.out.println(restaurantType);
+      System.out.println();
+
       // Show restaurant :
       Restaurant retrievedRestaurant = em.find(Restaurant.class, 2);
+      retrievedRestaurant.setType(restaurantType);
       RestaurantOverview restaurantOverview = new RestaurantOverview(
               retrievedRestaurant.getId(),
               retrievedRestaurant.getName(),
@@ -48,18 +58,10 @@ public class Main {
       System.out.println(restaurantOverview);
       System.out.println();
 
-      // Show City :
-      City city = em.find(City.class, 1);
-      System.out.println(city);
-      System.out.println();
-
-      // Show RestaurantType :
-      RestaurantType restaurantType = em.find(RestaurantType.class, 1);
-      System.out.println(restaurantType);
-      System.out.println();
-
       // Show BasicEvaluation :
       BasicEvaluation like = em.find(BasicEvaluation.class, 8);
+      like.setLikeRestaurant(false);
+      em.persist(like);
       System.out.println(like);
       System.out.println();
 

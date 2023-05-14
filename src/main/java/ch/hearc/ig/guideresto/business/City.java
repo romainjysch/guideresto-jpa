@@ -17,7 +17,7 @@ public class City {
     private String zipCode;
     @Column(name="NOM_VILLE", nullable = false, length = 100)
     private String cityName;
-    @Transient
+    @OneToMany(mappedBy = "city")
     private Set<Restaurant> restaurants;
 
     public City() {}
@@ -41,7 +41,7 @@ public class City {
         return restaurants;
     }
 
-  public void setId(int id) {
+    public void setId(int id) {
         this.id = id;
   }
 
@@ -57,6 +57,10 @@ public class City {
                 ", cityName='" + cityName + '\'' +
                 ", restaurants=" + restaurants +
                 '}';
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
 }
