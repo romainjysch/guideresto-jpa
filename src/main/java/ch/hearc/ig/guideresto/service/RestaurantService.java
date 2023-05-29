@@ -27,7 +27,7 @@ public class RestaurantService {
   public Set<RestaurantOverview> researchAllRestaurants() {
     TypedQuery<Restaurant> query = dbTransaction.getEm()
             .createNamedQuery("researchAllRestaurants", Restaurant.class);
-    List<Restaurant> restaurants = query.getResultList();
+    List<Restaurant> restaurants = dbTransaction.inTransaction(query::getResultList);
     Set<RestaurantOverview> restaurantOverviews = new HashSet<>();
     for (Restaurant restaurant : restaurants) {
       RestaurantOverview restaurantOverview = RestaurantToRestaurantOverview.convert(restaurant);

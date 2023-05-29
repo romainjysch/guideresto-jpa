@@ -15,18 +15,17 @@ import java.util.Set;
 public class Main {
 
   public static void main(String[] args) {
-    //jpql();
-    cli();
+    jpql();
+    //cli();
     //show();
   }
 
   private static void jpql() {
     try (var dbTransaction = new DBTransaction()) {
       var restaurantService = new RestaurantService(dbTransaction);
-      Set<Restaurant> restaurants = restaurantService.researchRestaurantsByName("La");
-      for (Restaurant restaurant : restaurants) {
-        RestaurantOverview ro = RestaurantToRestaurantOverview.convert(restaurant);
-        System.out.print(ro);
+      Set<RestaurantOverview> restaurantOverviews = restaurantService.researchAllRestaurants();
+      for (RestaurantOverview restaurantOverview : restaurantOverviews) {
+        System.out.println(restaurantOverview);
       }
     }
   }

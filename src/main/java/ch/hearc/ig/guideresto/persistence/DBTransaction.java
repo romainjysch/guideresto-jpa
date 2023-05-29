@@ -14,7 +14,6 @@ public class DBTransaction implements AutoCloseable {
     public DBTransaction() {
         emf = Persistence.createEntityManagerFactory("guideRestoPersistenceUnit");
         em = emf.createEntityManager();
-        em.getTransaction().begin();
     }
 
     public EntityManager getEm() {
@@ -22,12 +21,14 @@ public class DBTransaction implements AutoCloseable {
     }
 
     public <T> T inTransaction(Supplier<T> supplier) {
+        em.getTransaction().begin();
         T returnValue = supplier.get();
         em.getTransaction().commit();
         return returnValue;
     }
 
     public void inTransaction(Runnable runnable) {
+        em.getTransaction().begin();
         runnable.run();
         em.getTransaction().commit();
     }
