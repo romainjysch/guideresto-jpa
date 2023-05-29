@@ -26,7 +26,7 @@ public class Restaurant implements IAmRestaurant {
     private String description;
     @Column(name="SITE_WEB", nullable = false, length = 100)
     private String website;
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Evaluation> evaluations;
     @Embedded
     private Localisation address;

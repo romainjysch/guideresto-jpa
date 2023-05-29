@@ -305,6 +305,7 @@ public class CLI {
   private void addBasicEvaluation(Restaurant restaurant, Boolean like) {
     BasicEvaluation eval = new BasicEvaluation(null, LocalDate.now(), restaurant, like,
         getIpAddress());
+    restaurant.addEvaluation(eval);
     restaurantService.insertBasicEvaluation(eval);
     println("Votre vote a été pris en compte !");
   }
@@ -379,11 +380,14 @@ public class CLI {
     Set<City> cities = restaurantService.researchAllCities();
 
     City newCity = pickCity(cities);
-    if (newCity.equals(restaurant.getAddress().getCity())) {
+    // La condition ici était (probablement) fausse...
+    if (!newCity.equals(restaurant.getAddress().getCity())) {
       restaurant.getAddress().getCity().getRestaurants().remove(restaurant);
       newCity.getRestaurants().add(restaurant);
       restaurant.getAddress().setCity(newCity);
     }
+
+    restaurantService.updateRestaurant(restaurant);
 
     println("L'adresse a bien été modifiée ! Merci !");
   }
