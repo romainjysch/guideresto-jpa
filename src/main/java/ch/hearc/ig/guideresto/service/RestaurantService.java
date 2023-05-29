@@ -40,75 +40,69 @@ public class RestaurantService {
     TypedQuery<Restaurant> query = dbTransaction.getEm()
             .createNamedQuery("researchRestaurantById", Restaurant.class)
             .setParameter(1, restaurantId);
-    return query.getSingleResult();
+    return dbTransaction.inTransaction(query::getSingleResult);
   }
 
   public Set<Restaurant> researchRestaurantsByName(String research) {
     TypedQuery<Restaurant> query = dbTransaction.getEm()
             .createNamedQuery("researchRestaurantsByName", Restaurant.class)
             .setParameter(1, research + "%");
-    return query.getResultStream().collect(Collectors.toSet());
+    return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<Restaurant> researchRestaurantsByCityName(String research) {
     TypedQuery<Restaurant> query = dbTransaction.getEm()
             .createNamedQuery("researchRestaurantsByCityName", Restaurant.class)
             .setParameter(1, research + "%");
-    return query.getResultStream().collect(Collectors.toSet());
+    return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<Restaurant> researchRestaurantsByType(RestaurantType restaurantType) {
     TypedQuery<Restaurant> query = dbTransaction.getEm()
             .createNamedQuery("researchRestaurantsByType", Restaurant.class)
             .setParameter(1, restaurantType);
-    return query.getResultStream().collect(Collectors.toSet());
+    return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<RestaurantType> researchAllRestaurantTypes() {
     TypedQuery<RestaurantType> query = dbTransaction.getEm()
             .createNamedQuery("researchAllRestaurantTypes", RestaurantType.class);
-    return query.getResultStream().collect(Collectors.toSet());
+    return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<City> researchAllCities() {
     TypedQuery<City> query = dbTransaction.getEm()
             .createNamedQuery("researchAllCities", City.class);
-    return query.getResultStream().collect(Collectors.toSet());
+    return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public void insertRestaurant(Restaurant restaurant) {
-    dbTransaction.getEm().persist(restaurant);
-    dbTransaction.getEm().getTransaction().commit();
+    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(restaurant));
   }
 
   public void insertCity(City city) {
-    dbTransaction.getEm().persist(city);
-    dbTransaction.getEm().getTransaction().commit();
+    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(city));
   }
 
   public void insertBasicEvaluation(BasicEvaluation eval) {
-    dbTransaction.getEm().persist(eval);
-    dbTransaction.getEm().getTransaction().commit();
+    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(eval));
   }
 
   public Set<EvaluationCriteria> researchAllEvaluationCriteria() {
     TypedQuery<EvaluationCriteria> query = dbTransaction.getEm()
             .createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class);
-    return query.getResultStream().collect(Collectors.toSet());
+    return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public void insertCompleteEvaluation(CompleteEvaluation eval) {
-    dbTransaction.getEm().persist(eval);
-    dbTransaction.getEm().getTransaction().commit();
+    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(eval));
   }
 
   public void updateRestaurant(Restaurant restaurant) {
-    dbTransaction.getEm().persist(restaurant);
-    dbTransaction.getEm().getTransaction().commit();
+    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(restaurant));
   }
 
   public void deleteRestaurant(Restaurant restaurant) {
-    dbTransaction.getEm().remove(restaurant);
-    dbTransaction.getEm().getTransaction().commit();
+    dbTransaction.inTransaction(() -> dbTransaction.getEm().remove(restaurant));
   }
 }

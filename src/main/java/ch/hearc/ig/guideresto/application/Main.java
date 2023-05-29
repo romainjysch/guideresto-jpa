@@ -15,8 +15,8 @@ import java.util.Set;
 public class Main {
 
   public static void main(String[] args) {
-    jpql();
-    //cli();
+    //jpql();
+    cli();
     //show();
   }
 
