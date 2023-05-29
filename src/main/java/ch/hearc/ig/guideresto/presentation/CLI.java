@@ -385,6 +385,8 @@ public class CLI {
       restaurant.getAddress().setCity(newCity);
     }
 
+    restaurantService.updateRestaurant(restaurant);
+
     println("L'adresse a bien été modifiée ! Merci !");
   }
 

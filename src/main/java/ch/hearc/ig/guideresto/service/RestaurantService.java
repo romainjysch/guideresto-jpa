@@ -10,6 +10,7 @@ import ch.hearc.ig.guideresto.business.RestaurantType;
 import ch.hearc.ig.guideresto.persistence.DBTransaction;
 import utils.RestaurantToRestaurantOverview;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
@@ -25,8 +26,9 @@ public class RestaurantService {
   }
 
   public Set<RestaurantOverview> researchAllRestaurants() {
-    TypedQuery<Restaurant> query = dbTransaction.getEm()
-            .createNamedQuery("researchAllRestaurants", Restaurant.class);
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<Restaurant> query = em.createNamedQuery("researchAllRestaurants", Restaurant.class);
     List<Restaurant> restaurants = dbTransaction.inTransaction(query::getResultList);
     Set<RestaurantOverview> restaurantOverviews = new HashSet<>();
     for (Restaurant restaurant : restaurants) {
@@ -37,72 +39,97 @@ public class RestaurantService {
   }
 
   public Restaurant researchRestaurantById(int restaurantId) {
-    TypedQuery<Restaurant> query = dbTransaction.getEm()
-            .createNamedQuery("researchRestaurantById", Restaurant.class)
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantById", Restaurant.class)
             .setParameter(1, restaurantId);
     return dbTransaction.inTransaction(query::getSingleResult);
   }
 
   public Set<Restaurant> researchRestaurantsByName(String research) {
-    TypedQuery<Restaurant> query = dbTransaction.getEm()
-            .createNamedQuery("researchRestaurantsByName", Restaurant.class)
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByName", Restaurant.class)
             .setParameter(1, research + "%");
     return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<Restaurant> researchRestaurantsByCityName(String research) {
-    TypedQuery<Restaurant> query = dbTransaction.getEm()
-            .createNamedQuery("researchRestaurantsByCityName", Restaurant.class)
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByCityName", Restaurant.class)
             .setParameter(1, research + "%");
     return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<Restaurant> researchRestaurantsByType(RestaurantType restaurantType) {
-    TypedQuery<Restaurant> query = dbTransaction.getEm()
-            .createNamedQuery("researchRestaurantsByType", Restaurant.class)
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByType", Restaurant.class)
             .setParameter(1, restaurantType);
     return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<RestaurantType> researchAllRestaurantTypes() {
-    TypedQuery<RestaurantType> query = dbTransaction.getEm()
-            .createNamedQuery("researchAllRestaurantTypes", RestaurantType.class);
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<RestaurantType> query = em.createNamedQuery("researchAllRestaurantTypes", RestaurantType.class);
     return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public Set<City> researchAllCities() {
-    TypedQuery<City> query = dbTransaction.getEm()
-            .createNamedQuery("researchAllCities", City.class);
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<City> query = em.createNamedQuery("researchAllCities", City.class);
     return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public void insertRestaurant(Restaurant restaurant) {
-    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(restaurant));
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    dbTransaction.inTransaction(() -> em.persist(restaurant));
+    em.getTransaction().commit();
   }
 
   public void insertCity(City city) {
-    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(city));
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    dbTransaction.inTransaction(() -> em.persist(city));
+    em.getTransaction().commit();
   }
 
   public void insertBasicEvaluation(BasicEvaluation eval) {
-    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(eval));
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    dbTransaction.inTransaction(() -> em.persist(eval));
+    em.getTransaction().commit();
   }
 
   public Set<EvaluationCriteria> researchAllEvaluationCriteria() {
-    TypedQuery<EvaluationCriteria> query = dbTransaction.getEm()
-            .createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class);
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    TypedQuery<EvaluationCriteria> query = em.createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class);
     return dbTransaction.inTransaction(() -> query.getResultStream().collect(Collectors.toSet()));
   }
 
   public void insertCompleteEvaluation(CompleteEvaluation eval) {
-    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(eval));
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    dbTransaction.inTransaction(() -> em.persist(eval));
+    em.getTransaction().commit();
   }
 
   public void updateRestaurant(Restaurant restaurant) {
-    dbTransaction.inTransaction(() -> dbTransaction.getEm().persist(restaurant));
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    dbTransaction.inTransaction(() -> em.persist(restaurant));
+    em.getTransaction().commit();
   }
 
   public void deleteRestaurant(Restaurant restaurant) {
-    dbTransaction.inTransaction(() -> dbTransaction.getEm().remove(restaurant));
+    EntityManager em = dbTransaction.getEmf().createEntityManager();
+    em.getTransaction().begin();
+    dbTransaction.inTransaction(() -> em.remove(restaurant));
+    em.getTransaction().commit();
   }
 }
