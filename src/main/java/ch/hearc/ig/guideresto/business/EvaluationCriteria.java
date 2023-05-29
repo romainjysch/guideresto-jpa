@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CRITERES_EVALUATION")
+@NamedQuery(name = "researchAllEvaluationCriteria", query = "select ec from EvaluationCriteria ec")
 public class EvaluationCriteria {
 
     @Id

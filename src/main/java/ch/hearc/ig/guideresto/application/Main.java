@@ -1,27 +1,44 @@
 package ch.hearc.ig.guideresto.application;
 
 import ch.hearc.ig.guideresto.business.*;
+import ch.hearc.ig.guideresto.persistence.DBTransaction;
 import ch.hearc.ig.guideresto.presentation.CLI;
 import ch.hearc.ig.guideresto.service.RestaurantService;
+import utils.RestaurantToRestaurantOverview;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
 
   public static void main(String[] args) {
-    //cli();
-    show();
+    //jpql();
+    cli();
+    //show();
+  }
+
+  private static void jpql() {
+    try (var dbTransaction = new DBTransaction()) {
+      var restaurantService = new RestaurantService(dbTransaction);
+      Set<Restaurant> restaurants = restaurantService.researchRestaurantsByName("La");
+      for (Restaurant restaurant : restaurants) {
+        RestaurantOverview ro = RestaurantToRestaurantOverview.convert(restaurant);
+        System.out.print(ro);
+      }
+    }
   }
 
   private static void cli() {
-    var scanner = new Scanner(System.in);
-    var printStream = System.out;
-    var restaurantService = new RestaurantService();
-    var cli = new CLI(scanner, printStream, restaurantService);
-    cli.start();
+    try (var dbTransaction = new DBTransaction()) {
+      var scanner = new Scanner(System.in);
+      var printStream = System.out;
+      var restaurantService = new RestaurantService(dbTransaction);
+      var cli = new CLI(scanner, printStream, restaurantService);
+      cli.start();
+    }
   }
 
   private static void show() {
@@ -37,7 +54,7 @@ public class Main {
 
       // Show City :
       City city = em.find(City.class, 1);
-      city.setCityName("Chichville");
+      //city.setCityName("Chichville");
       System.out.println(city);
       System.out.println();
 
@@ -48,7 +65,7 @@ public class Main {
 
       // Show restaurant :
       Restaurant retrievedRestaurant = em.find(Restaurant.class, 2);
-      retrievedRestaurant.setType(restaurantType);
+      //retrievedRestaurant.setType(restaurantType);
       RestaurantOverview restaurantOverview = new RestaurantOverview(
               retrievedRestaurant.getId(),
               retrievedRestaurant.getName(),
@@ -60,8 +77,8 @@ public class Main {
 
       // Show BasicEvaluation :
       BasicEvaluation like = em.find(BasicEvaluation.class, 8);
-      like.setLikeRestaurant(false);
-      em.persist(like);
+      //like.setLikeRestaurant(false);
+      //em.persist(like);
       System.out.println(like);
       System.out.println();
 
@@ -71,7 +88,7 @@ public class Main {
       System.out.println();
 
       // Show EvaluationCriteria :
-      EvaluationCriteria evaluationCriteria = em.find(EvaluationCriteria.class, 1);
+      EvaluationCriteria evaluationCriteria = em.find(EvaluationCriteria.class, 2);
       System.out.println(evaluationCriteria);
       System.out.println();
 

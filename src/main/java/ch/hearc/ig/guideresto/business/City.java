@@ -6,6 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="VILLES")
+@NamedQuery(name = "researchAllCities", query = "select c from City c")
 public class City {
 
     @Id
@@ -17,7 +18,7 @@ public class City {
     private String zipCode;
     @Column(name="NOM_VILLE", nullable = false, length = 100)
     private String cityName;
-    @OneToMany(mappedBy = "city")
+    @OneToMany(mappedBy = "address.city")
     private Set<Restaurant> restaurants;
 
     public City() {}

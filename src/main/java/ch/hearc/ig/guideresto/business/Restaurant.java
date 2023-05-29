@@ -7,6 +7,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "RESTAURANTS")
+@NamedQuery(name = "researchAllRestaurants", query = "select r from Restaurant r")
+@NamedQuery(name = "researchRestaurantById", query = "select r from Restaurant r where r.id = ?1")
+@NamedQuery(name = "researchRestaurantsByName", query = "select r from Restaurant r where r.name like ?1")
+@NamedQuery(name = "researchRestaurantsByCityName", query = "select r from Restaurant r where r.address.city.cityName like ?1")
+@NamedQuery(name = "researchRestaurantsByType", query = "select r from Restaurant r where r.type = ?1")
 public class Restaurant implements IAmRestaurant {
 
     @Id

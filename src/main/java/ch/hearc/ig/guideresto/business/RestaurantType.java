@@ -6,6 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "TYPES_GASTRONOMIQUES")
+@NamedQuery(name = "researchAllRestaurantTypes", query = "select rt from RestaurantType rt")
 public class RestaurantType {
 
     @Id
