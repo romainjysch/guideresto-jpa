@@ -122,7 +122,7 @@ public class RestaurantService {
   public void updateRestaurant(Restaurant restaurant) {
     EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
-    em.persist(restaurant);
+    em.merge(restaurant);
     em.getTransaction().commit();
   }
 
