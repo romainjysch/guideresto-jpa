@@ -1,7 +1,6 @@
 package ch.hearc.ig.guideresto.application;
 
 import ch.hearc.ig.guideresto.business.*;
-import ch.hearc.ig.guideresto.persistence.DBTransaction;
 import ch.hearc.ig.guideresto.presentation.CLI;
 import ch.hearc.ig.guideresto.service.RestaurantService;
 import utils.RestaurantToRestaurantOverview;
@@ -21,23 +20,21 @@ public class Main {
   }
 
   private static void jpql() {
-    try (var dbTransaction = new DBTransaction()) {
-      var restaurantService = new RestaurantService(dbTransaction);
-      Set<RestaurantOverview> restaurantOverviews = restaurantService.researchAllRestaurants();
-      for (RestaurantOverview restaurantOverview : restaurantOverviews) {
-        System.out.println(restaurantOverview);
-      }
+    var entityManagerFactory = Persistence.createEntityManagerFactory("guideRestoPersistenceUnit");
+    var restaurantService = new RestaurantService(entityManagerFactory);
+    Set<RestaurantOverview> restaurantOverviews = restaurantService.researchAllRestaurants();
+    for (RestaurantOverview restaurantOverview : restaurantOverviews) {
+      System.out.println(restaurantOverview);
     }
   }
 
   private static void cli() {
-    try (var dbTransaction = new DBTransaction()) {
-      var scanner = new Scanner(System.in);
-      var printStream = System.out;
-      var restaurantService = new RestaurantService(dbTransaction);
-      var cli = new CLI(scanner, printStream, restaurantService);
-      cli.start();
-    }
+    var scanner = new Scanner(System.in);
+    var printStream = System.out;
+    var entityManagerFactory = Persistence.createEntityManagerFactory("guideRestoPersistenceUnit");
+    var restaurantService = new RestaurantService(entityManagerFactory);
+    var cli = new CLI(scanner, printStream, restaurantService);
+    cli.start();
   }
 
   private static void show() {
