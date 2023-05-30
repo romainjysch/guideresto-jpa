@@ -23,13 +23,12 @@ public class City {
 
     public City() {}
 
-    public City(Integer id, String zipCode, String cityName) {
-        this.id = id;
+    public City(String zipCode, String cityName) {
         this.zipCode = zipCode;
         this.cityName = cityName;
         this.restaurants = new HashSet<>();
     }
-    
+
     public String getZipCode() {
         return zipCode;
     }

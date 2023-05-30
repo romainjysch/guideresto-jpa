@@ -7,6 +7,10 @@ import ch.hearc.ig.guideresto.business.EvaluationCriteria;
 import ch.hearc.ig.guideresto.business.Restaurant;
 import ch.hearc.ig.guideresto.business.RestaurantOverview;
 import ch.hearc.ig.guideresto.business.RestaurantType;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import javax.persistence.Entity;
 import utils.RestaurantToRestaurantOverview;
 
 import javax.persistence.EntityManager;
@@ -19,118 +23,132 @@ import java.util.stream.Collectors;
 
 public class RestaurantService {
 
-  private final EntityManagerFactory emf;
+    private final EntityManagerFactory emf;
 
-  public RestaurantService(EntityManagerFactory emf) {
-    this.emf = emf;
-  }
-
-  public Set<RestaurantOverview> researchAllRestaurants() {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<Restaurant> query = em.createNamedQuery("researchAllRestaurants", Restaurant.class);
-    List<Restaurant> restaurants = query.getResultList();
-    Set<RestaurantOverview> restaurantOverviews = new HashSet<>();
-    for (Restaurant restaurant : restaurants) {
-      RestaurantOverview restaurantOverview = RestaurantToRestaurantOverview.convert(restaurant);
-      restaurantOverviews.add(restaurantOverview);
+    public RestaurantService(EntityManagerFactory emf) {
+        this.emf = emf;
     }
-    return restaurantOverviews;
-  }
 
-  public Restaurant researchRestaurantById(int restaurantId) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantById", Restaurant.class)
-            .setParameter(1, restaurantId);
-    return query.getSingleResult();
-  }
+    public Set<RestaurantOverview> researchAllRestaurants() {
+        return inTransaction(em -> {
+            TypedQuery<Restaurant> query = em.createNamedQuery("researchAllRestaurants",
+                Restaurant.class);
+            List<Restaurant> restaurants = query.getResultList();
+            Set<RestaurantOverview> restaurantOverviews = new HashSet<>();
+            for (Restaurant restaurant : restaurants) {
+                RestaurantOverview restaurantOverview = RestaurantToRestaurantOverview.convert(
+                    restaurant);
+                restaurantOverviews.add(restaurantOverview);
+            }
+            return restaurantOverviews;
+        });
+    }
 
-  public Set<Restaurant> researchRestaurantsByName(String research) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByName", Restaurant.class)
-            .setParameter(1, research + "%");
-    return query.getResultStream().collect(Collectors.toSet());
-  }
+    public Restaurant researchRestaurantById(int restaurantId) {
+        return inTransaction(em -> {
+            TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantById",
+                    Restaurant.class)
+                .setParameter(1, restaurantId);
+            return query.getSingleResult();
+        });
+    }
 
-  public Set<Restaurant> researchRestaurantsByCityName(String research) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByCityName", Restaurant.class)
-            .setParameter(1, research + "%");
-    return query.getResultStream().collect(Collectors.toSet());
-  }
+    public Set<Restaurant> researchRestaurantsByName(String research) {
+        return inTransaction(em -> {
+            TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByName",
+                    Restaurant.class)
+                .setParameter(1, research + "%");
+            return query.getResultStream().collect(Collectors.toSet());
+        });
+    }
 
-  public Set<Restaurant> researchRestaurantsByType(RestaurantType restaurantType) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByType", Restaurant.class)
-            .setParameter(1, restaurantType);
-    return query.getResultStream().collect(Collectors.toSet());
-  }
+    public Set<Restaurant> researchRestaurantsByCityName(String research) {
+        return inTransaction(em -> {
+            TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByCityName",
+                    Restaurant.class)
+                .setParameter(1, research + "%");
+            return query.getResultStream().collect(Collectors.toSet());
+        });
+    }
 
-  public Set<RestaurantType> researchAllRestaurantTypes() {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<RestaurantType> query = em.createNamedQuery("researchAllRestaurantTypes", RestaurantType.class);
-    return query.getResultStream().collect(Collectors.toSet());
-  }
+    public Set<Restaurant> researchRestaurantsByType(RestaurantType restaurantType) {
+        return inTransaction(em -> {
+            TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByType",
+                    Restaurant.class)
+                .setParameter(1, restaurantType);
+            return query.getResultStream().collect(Collectors.toSet());
+        });
+    }
 
-  public Set<City> researchAllCities() {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<City> query = em.createNamedQuery("researchAllCities", City.class);
-    return query.getResultStream().collect(Collectors.toSet());
-  }
+    public Set<RestaurantType> researchAllRestaurantTypes() {
+        return inTransaction(em -> {
+            TypedQuery<RestaurantType> query = em.createNamedQuery("researchAllRestaurantTypes",
+                RestaurantType.class);
+            return query.getResultStream().collect(Collectors.toSet());
+        });
+    }
 
-  public void insertRestaurant(Restaurant restaurant) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    em.persist(restaurant);
-    em.getTransaction().commit();
-  }
+    public Set<City> researchAllCities() {
+        return inTransaction(em -> {
+            TypedQuery<City> query = em.createNamedQuery("researchAllCities", City.class);
+            return query.getResultStream().collect(Collectors.toSet());
+        });
+    }
 
-  public void insertCity(City city) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    em.persist(city);
-    em.getTransaction().commit();
-  }
+    public void insertRestaurant(Restaurant restaurant) {
+        inTransactionNoReturn(em -> em.persist(restaurant));
+    }
 
-  public void insertBasicEvaluation(BasicEvaluation eval) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    em.persist(eval);
-    em.getTransaction().commit();
-  }
+    public void insertCity(City city) {
+        inTransactionNoReturn(em -> em.persist(city));
+    }
 
-  public Set<EvaluationCriteria> researchAllEvaluationCriteria() {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    TypedQuery<EvaluationCriteria> query = em.createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class);
-    return query.getResultStream().collect(Collectors.toSet());
-  }
+    public void insertBasicEvaluation(BasicEvaluation eval) {
+        inTransactionNoReturn(em -> em.persist(eval));
+    }
 
-  public void insertCompleteEvaluation(CompleteEvaluation eval) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    em.persist(eval);
-    em.getTransaction().commit();
-  }
+    public Set<EvaluationCriteria> researchAllEvaluationCriteria() {
+        return inTransaction(em -> {
+            TypedQuery<EvaluationCriteria> query = em.createNamedQuery(
+                "researchAllEvaluationCriteria",
+                EvaluationCriteria.class);
+            return query.getResultStream().collect(Collectors.toSet());
+        });
+    }
 
-  public void updateRestaurant(Restaurant restaurant) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    em.merge(restaurant);
-    em.getTransaction().commit();
-  }
+    public void insertCompleteEvaluation(CompleteEvaluation eval) {
+        inTransactionNoReturn(em -> em.persist(eval));
+    }
 
-  public void deleteRestaurant(Restaurant restaurant) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
-    em.remove(restaurant);
-    em.getTransaction().commit();
-  }
+    public void updateRestaurant(Restaurant restaurant) {
+        inTransactionNoReturn(em -> em.merge(restaurant));
+    }
+
+    public void deleteRestaurant(Restaurant restaurant) {
+        inTransactionNoReturn(em -> em.remove(restaurant));
+    }
+
+    public void inTransactionNoReturn(Consumer<EntityManager> function) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            function.accept(em);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    public <T> T inTransaction(Function<EntityManager, T> function) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            T result = function.apply(em);
+            em.getTransaction().commit();
+            return result;
+        } finally {
+            em.close();
+        }
+    }
 
 }
