@@ -124,8 +124,12 @@ public class RestaurantService {
       T result = function.apply(em);
       em.getTransaction().commit();
       return result;
+    } catch (Exception e) {
+      em.getTransaction().rollback();
+      e.printStackTrace();
+      return null;
     } finally {
-      em.close();
+      //em.close();
     }
   }
 
@@ -135,8 +139,11 @@ public class RestaurantService {
       em.getTransaction().begin();
       consumer.accept(em);
       em.getTransaction().commit();
+    } catch (Exception e) {
+      em.getTransaction().rollback();
+      e.printStackTrace();
     } finally {
-      em.close();
+      //em.close();
     }
   }
 
