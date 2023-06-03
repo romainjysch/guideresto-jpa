@@ -1,11 +1,14 @@
 package ch.hearc.ig.guideresto.business;
 
-import org.hibernate.annotations.ColumnTransformer;
+import lombok.Getter;
+import lombok.Setter;
 import utils.BooleanConverter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "LIKES")
 public class BasicEvaluation extends Evaluation {
@@ -25,14 +28,6 @@ public class BasicEvaluation extends Evaluation {
     this.ipAddress = ipAddress;
   }
 
-  public Boolean isLikeRestaurant() {
-    return likeRestaurant;
-  }
-
-  public String getIpAddress() {
-    return ipAddress;
-  }
-
   @Override
   public String toString() {
     return super.toString() + " BasicEvaluation{" +
@@ -41,6 +36,4 @@ public class BasicEvaluation extends Evaluation {
             '}';
   }
 
-  public void setLikeRestaurant(boolean b) {
-  }
 }

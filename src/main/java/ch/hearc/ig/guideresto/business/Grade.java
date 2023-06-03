@@ -1,7 +1,12 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "NOTES")
 public class Grade {
@@ -27,26 +32,6 @@ public class Grade {
         this.grade = grade;
         this.evaluation = evaluation;
         this.criteria = criteria;
-    }
-
-    public Integer getGrade() {
-        return grade;
-    }
-
-    public EvaluationCriteria getCriteria() {
-        return criteria;
-    }
-
-    public Evaluation getEvaluation() {
-        return evaluation;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setEvaluation(CompleteEvaluation completeEvaluation) {
-        this.evaluation = completeEvaluation;
     }
 
     @Override

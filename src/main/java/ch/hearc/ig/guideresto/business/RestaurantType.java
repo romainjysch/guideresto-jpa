@@ -1,9 +1,14 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "TYPES_GASTRONOMIQUES")
 @NamedQuery(name = "researchAllRestaurantTypes", query = "select rt from RestaurantType rt")
@@ -34,26 +39,6 @@ public class RestaurantType {
     public void addRestaurant(Restaurant restaurant) {
         restaurant.setType(this);
         this.getRestaurants().add(restaurant);
-    }
-    
-    public String getLabel() {
-        return label;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Set<Restaurant> getRestaurants() {
-        return restaurants;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setRestaurants(Set<Restaurant> restaurants) {
-        this.restaurants = restaurants;
     }
 
     @Override

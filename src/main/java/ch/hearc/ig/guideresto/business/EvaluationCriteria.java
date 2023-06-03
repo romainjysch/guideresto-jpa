@@ -1,7 +1,10 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Getter
 @Entity
 @Table(name = "CRITERES_EVALUATION")
 @NamedQuery(name = "researchAllEvaluationCriteria", query = "select ec from EvaluationCriteria ec")
@@ -23,18 +26,6 @@ public class EvaluationCriteria {
         this.id = id;
         this.name = name;
         this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getId() {
-        return id;
     }
 
     @Override

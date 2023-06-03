@@ -1,13 +1,18 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "RESTAURANTS")
-@NamedQuery(name = "researchAllRestaurants", query = "select r from Restaurant r join fetch r.evaluations")
+@NamedQuery(name = "researchAllRestaurants", query = "select r from Restaurant r")
 @NamedQuery(name = "researchRestaurantById", query = "select r from Restaurant r where r.id = ?1")
 @NamedQuery(name = "researchRestaurantsByName", query = "select r from Restaurant r where r.name like ?1")
 @NamedQuery(name = "researchRestaurantsByCityName", query = "select r from Restaurant r where r.address.city.cityName like ?1")
@@ -62,54 +67,6 @@ public class Restaurant implements IAmRestaurant {
         return address.getCity().getCityName();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public Set<Evaluation> getEvaluations() {
-        return evaluations;
-    }
-
-    public Localisation getAddress() {
-        return address;
-    }
-
-    public RestaurantType getType() {
-        return type;
-    }
-
-    public void setType(RestaurantType type) {
-        this.type = type;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setAddress(Localisation address) {
-        this.address = address;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void addEvaluation(Evaluation evaluation) {
         evaluation.setRestaurant(this);
         this.getEvaluations().add(evaluation);
@@ -132,7 +89,4 @@ public class Restaurant implements IAmRestaurant {
         return Objects.hash(id);
     }
 
-    public void setEvaluations(HashSet<Evaluation> evaluations) {
-        this.evaluations = evaluations;
-    }
 }

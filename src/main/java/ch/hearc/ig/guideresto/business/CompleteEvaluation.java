@@ -1,10 +1,15 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "COMMENTAIRES")
 public class CompleteEvaluation extends Evaluation {
@@ -14,7 +19,7 @@ public class CompleteEvaluation extends Evaluation {
   private String comment;
   @Column(name = "NOM_UTILISATEUR", nullable = false, length = 100)
   private String username;
-  @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "evaluation")
   private Set<Grade> grades;
 
   public CompleteEvaluation() {}
@@ -27,25 +32,9 @@ public class CompleteEvaluation extends Evaluation {
     this.grades = new HashSet<>();
   }
 
-  public String getComment() {
-    return comment;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public Set<Grade> getGrades() {
-    return grades;
-  }
-
   public void addGrade(Grade grade) {
     grade.setEvaluation(this);
     this.getGrades().add(grade);
-  }
-
-  public void setGrades(Set<Grade> grades) {
-    this.grades = grades;
   }
 
   @Override

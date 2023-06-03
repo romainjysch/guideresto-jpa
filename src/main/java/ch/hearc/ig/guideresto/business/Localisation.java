@@ -1,7 +1,12 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Setter
+@Getter
 @Embeddable
 public class Localisation {
 
@@ -23,19 +28,4 @@ public class Localisation {
         this.city.getRestaurants().add(restaurant);
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
 }

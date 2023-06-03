@@ -1,10 +1,14 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Evaluation {
@@ -28,22 +32,6 @@ public abstract class Evaluation {
     this.restaurant = restaurant;
   }
 
-  public LocalDate getVisitDate() {
-    return visitDate;
-  }
-
-  public Restaurant getRestaurant() {
-    return restaurant;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = Integer.valueOf(id);
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -59,10 +47,6 @@ public abstract class Evaluation {
   @Override
   public int hashCode() {
     return Objects.hash(id);
-  }
-
-  public void setRestaurant(Restaurant restaurant) {
-    this.restaurant = restaurant;
   }
 
   @Override

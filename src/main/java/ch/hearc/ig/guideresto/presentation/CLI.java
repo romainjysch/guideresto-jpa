@@ -173,7 +173,7 @@ public class CLI {
 
     Optional<RestaurantType> maybeRestaurantType = searchTypeByLabel(types, choice);
     return maybeRestaurantType.orElseGet(() -> pickRestaurantType(types));
-  }
+  } 
 
   private void searchRestaurantByType() {
     Set<RestaurantType> restaurantTypes = restaurantService.researchAllRestaurantTypes();

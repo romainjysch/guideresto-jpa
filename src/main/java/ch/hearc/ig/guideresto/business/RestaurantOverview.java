@@ -1,5 +1,8 @@
 package ch.hearc.ig.guideresto.business;
 
+import lombok.Getter;
+
+@Getter
 public class RestaurantOverview implements IAmRestaurant {
   private final Integer id;
   private final String name;
@@ -13,10 +16,6 @@ public class RestaurantOverview implements IAmRestaurant {
     this.street = street;
     this.cityName = cityName;
     this.zipCode = zipCode;
-  }
-
-  public Integer getId() {
-    return id;
   }
 
   public String getName() {
