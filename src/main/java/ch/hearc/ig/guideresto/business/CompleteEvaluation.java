@@ -17,8 +17,10 @@ public class CompleteEvaluation extends Evaluation {
   @Column(name = "COMMENTAIRE", nullable = false)
   @Lob
   private String comment;
+
   @Column(name = "NOM_UTILISATEUR", nullable = false, length = 100)
   private String username;
+
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "evaluation")
   private Set<Grade> grades;
 
@@ -35,15 +37,6 @@ public class CompleteEvaluation extends Evaluation {
   public void addGrade(Grade grade) {
     grade.setEvaluation(this);
     this.getGrades().add(grade);
-  }
-
-  @Override
-  public String toString() {
-    return super.toString() + "CompleteEvaluation{" +
-            "comment='" + comment + '\'' +
-            ", username='" + username + '\'' +
-            ", grades=" + grades +
-            '}';
   }
 
 }

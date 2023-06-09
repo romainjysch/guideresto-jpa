@@ -1,4 +1,4 @@
-package utils;
+package ch.hearc.ig.guideresto.utils;
 
 import ch.hearc.ig.guideresto.business.Restaurant;
 import ch.hearc.ig.guideresto.business.RestaurantOverview;

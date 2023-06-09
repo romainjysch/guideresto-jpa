@@ -1,4 +1,4 @@
-package utils;
+package ch.hearc.ig.guideresto.utils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

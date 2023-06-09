@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class RestaurantOverview implements IAmRestaurant {
+
   private final Integer id;
   private final String name;
   private final String street;
@@ -33,17 +34,6 @@ public class RestaurantOverview implements IAmRestaurant {
 
   public String getZipCode() {
     return zipCode;
-  }
-
-  @Override
-  public String toString() {
-    return "RestaurantOverview{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", street='" + street + '\'' +
-            ", zipCode='" + zipCode + '\'' +
-            ", cityName='" + cityName + '\'' +
-            '}';
   }
 
 }

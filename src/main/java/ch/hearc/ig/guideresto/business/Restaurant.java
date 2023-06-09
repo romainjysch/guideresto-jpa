@@ -24,17 +24,23 @@ public class Restaurant implements IAmRestaurant {
     @SequenceGenerator(name = "SEQ_RESTAURANTS", sequenceName = "SEQ_RESTAURANTS", initialValue = 1, allocationSize = 1)
     @Column(name="NUMERO", nullable = false, length = 10)
     private Integer id;
+
     @Column(name="NOM", nullable = false, length = 100)
     private String name;
+
     @Column(name="DESCRIPTION", nullable = false)
     @Lob
     private String description;
+
     @Column(name="SITE_WEB", nullable = false, length = 100)
     private String website;
+
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private Set<Evaluation> evaluations;
+
     @Embedded
     private Localisation address;
+
     @ManyToOne
     @JoinColumn(name = "FK_TYPE")
     private RestaurantType type;
@@ -72,6 +78,7 @@ public class Restaurant implements IAmRestaurant {
         this.getEvaluations().add(evaluation);
     }
 
+    // pas d'identité métier
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -86,7 +93,7 @@ public class Restaurant implements IAmRestaurant {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return 42;
     }
 
 }

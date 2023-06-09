@@ -9,7 +9,9 @@ import ch.hearc.ig.guideresto.business.RestaurantOverview;
 import ch.hearc.ig.guideresto.business.RestaurantType;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import utils.RestaurantToRestaurantOverview;
+
+import ch.hearc.ig.guideresto.persistence.*;
+import ch.hearc.ig.guideresto.utils.RestaurantToRestaurantOverview;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,130 +23,80 @@ import java.util.stream.Collectors;
 
 public class RestaurantService {
 
-  private final EntityManagerFactory emf;
+  private final Database database;
+  private final RestaurantDAO restaurantDAO;
+  private final RestaurantTypeDAO restaurantTypeDAO;
+  private final CityDAO cityDAO;
+  private final BasicEvaluationDAO basicEvaluationDAO;
+  private final CompleteEvaluationDAO completeEvaluationDAO;
+  private final EvaluationCriteriaDAO evaluationCriteriaDAO;
 
-  public RestaurantService(EntityManagerFactory emf) {
-    this.emf = emf;
+  public RestaurantService(Database database, RestaurantDAO restaurantDAO,
+                           RestaurantTypeDAO restaurantTypeDAO, CityDAO cityDAO, BasicEvaluationDAO basicEvaluationDAO,
+                           CompleteEvaluationDAO completeEValuationDAO, EvaluationCriteriaDAO evaluationCriteriaDAO) {
+    this.database = database;
+    this.restaurantDAO = restaurantDAO;
+    this.restaurantTypeDAO = restaurantTypeDAO;
+    this.cityDAO = cityDAO;
+    this.basicEvaluationDAO = basicEvaluationDAO;
+    this.completeEvaluationDAO = completeEValuationDAO;
+    this.evaluationCriteriaDAO = evaluationCriteriaDAO;
   }
 
   public Set<RestaurantOverview> researchAllRestaurants() {
-    List<Restaurant> restaurants = inTransactionFunction(em -> {
-      TypedQuery<Restaurant> query = em.createNamedQuery("researchAllRestaurants", Restaurant.class);
-      return query.getResultList();
-    });
-    Set<RestaurantOverview> restaurantOverviews = new HashSet<>();
-    for (Restaurant restaurant : restaurants) {
-      RestaurantOverview restaurantOverview = RestaurantToRestaurantOverview.convert(restaurant);
-      restaurantOverviews.add(restaurantOverview);
-    }
-    return restaurantOverviews;
+    return database.inTransaction(restaurantDAO::findAll);
   }
 
   public Restaurant researchRestaurantById(int restaurantId) {
-    return inTransactionFunction(em -> {
-      TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantById", Restaurant.class)
-              .setParameter(1, restaurantId);
-      return query.getSingleResult();
-    });
+    return database.inTransaction(() -> restaurantDAO.findById(restaurantId));
   }
 
   public Set<Restaurant> researchRestaurantsByName(String research) {
-    return inTransactionFunction(em -> {
-      TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByName", Restaurant.class)
-              .setParameter(1, research + "%");
-      return query.getResultStream().collect(Collectors.toSet());
-    });
+    return database.inTransaction(() -> restaurantDAO.findByName(research));
   }
 
   public Set<Restaurant> researchRestaurantsByCityName(String research) {
-    return inTransactionFunction(em -> {
-      TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByCityName", Restaurant.class)
-              .setParameter(1, research + "%");
-      return query.getResultStream().collect(Collectors.toSet());
-    });
+    return database.inTransaction(() -> restaurantDAO.findByCityName(research));
   }
 
   public Set<Restaurant> researchRestaurantsByType(RestaurantType restaurantType) {
-    return inTransactionFunction(em -> {
-      TypedQuery<Restaurant> query = em.createNamedQuery("researchRestaurantsByType", Restaurant.class)
-              .setParameter(1, restaurantType);
-      return query.getResultStream().collect(Collectors.toSet());
-    });
+    return database.inTransaction(() -> restaurantDAO.findByRestaurantType(restaurantType));
   }
 
   public Set<RestaurantType> researchAllRestaurantTypes() {
-    return inTransactionFunction(em -> {
-      TypedQuery<RestaurantType> query = em.createNamedQuery("researchAllRestaurantTypes", RestaurantType.class);
-      return query.getResultStream().collect(Collectors.toSet());
-    });
+    return database.inTransaction(restaurantTypeDAO::findAll);
   }
 
   public Set<City> researchAllCities() {
-    return inTransactionFunction(em -> {
-      TypedQuery<City> query = em.createNamedQuery("researchAllCities", City.class);
-      return query.getResultStream().collect(Collectors.toSet());
-    });
+    return database.inTransaction(cityDAO::findAll);
   }
 
   public void insertRestaurant(Restaurant restaurant) {
-    inTransactionConsumer(em -> em.persist(restaurant));
+    database.inTransaction(() -> restaurantDAO.insert(restaurant));
   }
 
   public void insertCity(City city) {
-    inTransactionConsumer(em -> em.persist(city));
+    database.inTransaction(() -> cityDAO.insert(city));
   }
 
-  public void insertBasicEvaluation(BasicEvaluation eval) {
-    inTransactionConsumer(em -> em.persist(eval));
+  public void insertBasicEvaluation(BasicEvaluation basicEvaluation) {
+    database.inTransaction(() -> basicEvaluationDAO.insert(basicEvaluation));
   }
 
   public Set<EvaluationCriteria> researchAllEvaluationCriteria() {
-    return inTransactionFunction(em -> {
-      TypedQuery<EvaluationCriteria> query = em.createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class);
-      return query.getResultStream().collect(Collectors.toSet());
-    });
+    return database.inTransaction(evaluationCriteriaDAO::findAll);
   }
 
-  public void insertCompleteEvaluation(CompleteEvaluation eval) {
-    inTransactionConsumer(em -> em.persist(eval));
+  public void insertCompleteEvaluation(CompleteEvaluation completeEvaluation) {
+    database.inTransaction(() -> completeEvaluationDAO.insert(completeEvaluation));
   }
 
   public void updateRestaurant(Restaurant restaurant) {
-    inTransactionConsumer(em -> em.merge(restaurant));
+    database.inTransaction(() -> restaurantDAO.update(restaurant));
   }
 
   public void deleteRestaurant(Restaurant restaurant) {
-    inTransactionConsumer(em -> em.remove(restaurant));
-  }
-
-  private <T> T inTransactionFunction(Function<EntityManager, T> function) {
-    EntityManager em = emf.createEntityManager();
-    try {
-      em.getTransaction().begin();
-      T result = function.apply(em);
-      em.getTransaction().commit();
-      return result;
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      e.printStackTrace();
-      return null;
-    } finally {
-      //em.close();
-    }
-  }
-
-  private void inTransactionConsumer(Consumer<EntityManager> consumer) {
-    EntityManager em = emf.createEntityManager();
-    try {
-      em.getTransaction().begin();
-      consumer.accept(em);
-      em.getTransaction().commit();
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      e.printStackTrace();
-    } finally {
-      //em.close();
-    }
+    database.inTransaction(() -> restaurantDAO.delete(restaurant));
   }
 
 }

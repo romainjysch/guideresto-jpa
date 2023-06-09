@@ -18,8 +18,10 @@ public abstract class Evaluation {
   @SequenceGenerator(name = "SEQ_EVAL", sequenceName = "SEQ_EVAL", initialValue = 1, allocationSize = 1)
   @Column(name="NUMERO", nullable = false, length = 10)
   private Integer id;
+
   @Column(name = "DATE_EVAL", nullable = false)
   private LocalDate visitDate;
+
   @ManyToOne
   @JoinColumn(name = "FK_REST")
   private Restaurant restaurant;
@@ -34,34 +36,16 @@ public abstract class Evaluation {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
     Evaluation that = (Evaluation) o;
     return Objects.equals(id, that.id);
   }
 
+  // hashcode retourne un nombre fix car l'identité technique n'est pas défini à la création
   @Override
   public int hashCode() {
-    return Objects.hash(id);
-  }
-
-  @Override
-  public String toString() {
-    RestaurantOverview restaurantOverview = new RestaurantOverview(
-            restaurant.getId(),
-            restaurant.getName(),
-            restaurant.getStreet(),
-            restaurant.getZipCode(),
-            restaurant.getCityName());
-    return "Evaluation{" +
-            "id=" + id +
-            ", visitDate=" + visitDate +
-            ", restaurant=" + restaurantOverview +
-            '}';
+    return 42;
   }
 
 }

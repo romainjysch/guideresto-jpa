@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -16,11 +17,14 @@ public class Grade {
     @SequenceGenerator(name = "SEQ_NOTES", sequenceName = "SEQ_NOTES", initialValue = 1, allocationSize = 1)
     @Column(name="NUMERO", nullable = false, length = 10)
     private Integer id;
+
     @Column(name="NOTE", nullable = false, length = 3)
     private Integer grade;
+
     @ManyToOne
     @JoinColumn(name = "FK_COMM")
     private CompleteEvaluation evaluation;
+
     @ManyToOne
     @JoinColumn(name = "FK_CRIT")
     private EvaluationCriteria criteria;
@@ -35,13 +39,16 @@ public class Grade {
     }
 
     @Override
-    public String toString() {
-        return "Grade{" +
-                "id=" + id +
-                ", grade=" + grade +
-                ", evaluation=" + evaluation +
-                ", criteria=" + criteria +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Grade grade = (Grade) o;
+        return Objects.equals(id, grade.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 42;
     }
 
 }
