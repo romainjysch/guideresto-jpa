@@ -7,11 +7,19 @@ import java.util.function.Supplier;
 
 public class Database {
 
+    private static Database instance;
     private final EntityManagerFactory emf;
     private static ThreadLocal<EntityManager> em = new ThreadLocal<>();
 
-    public Database() {
+    private Database() {
         emf = Persistence.createEntityManagerFactory("guideRestoPersistenceUnit");
+    }
+
+    public static Database getInstance() {
+        if (instance == null) {
+            instance = new Database();
+        }
+        return instance;
     }
 
     public <T> T inTransaction(Supplier<T> function) {

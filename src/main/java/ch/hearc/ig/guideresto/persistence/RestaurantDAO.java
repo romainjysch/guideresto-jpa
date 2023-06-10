@@ -15,6 +15,17 @@ import java.util.stream.Collectors;
 
 public class RestaurantDAO {
 
+    private static RestaurantDAO instance;
+
+    private RestaurantDAO() {}
+
+    public static RestaurantDAO getInstance() {
+        if (instance == null) {
+            instance = new RestaurantDAO();
+        }
+        return instance;
+    }
+
     public Set<RestaurantOverview> findAll () {
         TypedQuery<Restaurant> query = getEntityManager().createNamedQuery("researchAllRestaurants", Restaurant.class);
         List<Restaurant> restaurants = query.getResultList();

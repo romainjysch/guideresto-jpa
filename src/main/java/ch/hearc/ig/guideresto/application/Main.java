@@ -15,15 +15,14 @@ public class Main {
   private static void cli() {
     var scanner = new Scanner(System.in);
     var printStream = System.out;
-    var database = new Database();
     var restaurantService = new RestaurantService(
-            database,
-            new RestaurantDAO(),
-            new RestaurantTypeDAO(),
-            new CityDAO(),
-            new BasicEvaluationDAO(),
-            new CompleteEvaluationDAO(),
-            new EvaluationCriteriaDAO());
+            Database.getInstance(),
+            RestaurantDAO.getInstance(),
+            RestaurantTypeDAO.getInstance(),
+            CityDAO.getInstance(),
+            BasicEvaluationDAO.getInstance(),
+            CompleteEvaluationDAO.getInstance(),
+            EvaluationCriteriaDAO.getInstance());
     var cli = new CLI(scanner, printStream, restaurantService);
     cli.start();
   }

@@ -10,6 +10,17 @@ import java.util.stream.Collectors;
 
 public class EvaluationCriteriaDAO {
 
+    private static EvaluationCriteriaDAO instance;
+
+    private EvaluationCriteriaDAO() {}
+
+    public static EvaluationCriteriaDAO getInstance() {
+        if (instance == null) {
+            instance = new EvaluationCriteriaDAO();
+        }
+        return instance;
+    }
+
     public Set<EvaluationCriteria> findAll() {
         TypedQuery<EvaluationCriteria> query = getEntityManager().createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class);
         return query.getResultStream().collect(Collectors.toSet());

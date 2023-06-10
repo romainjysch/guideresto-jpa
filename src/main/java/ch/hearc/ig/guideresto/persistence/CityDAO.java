@@ -10,6 +10,17 @@ import java.util.stream.Collectors;
 
 public class CityDAO {
 
+    private static CityDAO instance;
+
+    private CityDAO() {}
+
+    public static CityDAO getInstance() {
+        if (instance == null) {
+            instance = new CityDAO();
+        }
+        return instance;
+    }
+
     public Set<City> findAll() {
         TypedQuery<City> query = getEntityManager().createNamedQuery("researchAllCities", City.class);
         return query.getResultStream().collect(Collectors.toSet());
