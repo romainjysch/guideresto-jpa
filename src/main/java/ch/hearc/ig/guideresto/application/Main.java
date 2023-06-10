@@ -23,7 +23,7 @@ public class Main {
             BasicEvaluationDAO.getInstance(),
             CompleteEvaluationDAO.getInstance(),
             EvaluationCriteriaDAO.getInstance());
-    var cli = new CLI(scanner, printStream, restaurantService);
+    var cli = CLI.getInstance(scanner, printStream, restaurantService);
     cli.start();
   }
 

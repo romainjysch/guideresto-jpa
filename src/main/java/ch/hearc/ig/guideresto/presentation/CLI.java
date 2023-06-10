@@ -24,15 +24,23 @@ import java.util.Set;
 
 public class CLI {
 
+  private static CLI instance;
   private final Scanner scanner;
   private final PrintStream printStream;
   private final RestaurantService restaurantService;
 
   // Injection de dépendances
-  public CLI(Scanner scanner, PrintStream printStream, RestaurantService restaurantService) {
+  private CLI(Scanner scanner, PrintStream printStream, RestaurantService restaurantService) {
     this.scanner = scanner;
     this.printStream = printStream;
     this.restaurantService = restaurantService;
+  }
+
+  public static CLI getInstance(Scanner scanner, PrintStream printStream, RestaurantService restaurantService) {
+    if (instance == null) {
+      instance = new CLI(scanner, printStream, restaurantService);
+    }
+    return instance;
   }
 
   public void start() {
