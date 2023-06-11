@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.function.Supplier;
 
-public class Database {
+public class Database implements AutoCloseable {
 
     private static Database instance;
     private final EntityManagerFactory emf;
@@ -51,6 +51,15 @@ public class Database {
 
     public static EntityManager getEntityManager() {
         return em.get();
+    }
+
+    @Override
+    public void close() {
+        try {
+            emf.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

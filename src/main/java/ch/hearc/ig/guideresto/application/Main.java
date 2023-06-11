@@ -13,18 +13,20 @@ public class Main {
   }
 
   private static void cli() {
-    var scanner = new Scanner(System.in);
-    var printStream = System.out;
-    var restaurantService = new RestaurantService(
-            Database.getInstance(),
-            RestaurantDAO.getInstance(),
-            RestaurantTypeDAO.getInstance(),
-            CityDAO.getInstance(),
-            BasicEvaluationDAO.getInstance(),
-            CompleteEvaluationDAO.getInstance(),
-            EvaluationCriteriaDAO.getInstance());
-    var cli = CLI.getInstance(scanner, printStream, restaurantService);
-    cli.start();
+    try (var database = Database.getInstance()) {
+      var scanner = new Scanner(System.in);
+      var printStream = System.out;
+      var restaurantService = new RestaurantService(
+              database,
+              RestaurantDAO.getInstance(),
+              RestaurantTypeDAO.getInstance(),
+              CityDAO.getInstance(),
+              BasicEvaluationDAO.getInstance(),
+              CompleteEvaluationDAO.getInstance(),
+              EvaluationCriteriaDAO.getInstance());
+      var cli = CLI.getInstance(scanner, printStream, restaurantService);
+      cli.start();
+    }
   }
 
 }
