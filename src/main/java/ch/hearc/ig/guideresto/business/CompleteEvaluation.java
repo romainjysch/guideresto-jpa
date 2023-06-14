@@ -21,7 +21,7 @@ public class CompleteEvaluation extends Evaluation {
   @Column(name = "NOM_UTILISATEUR", nullable = false, length = 100)
   private String username;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "evaluation", fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "evaluation")
   private Set<Grade> grades;
 
   public CompleteEvaluation() {}
