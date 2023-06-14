@@ -12,16 +12,56 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "RESTAURANTS")
-@NamedQuery(name = "researchAllRestaurants", query = "select r from Restaurant r")
-@NamedQuery(name = "researchRestaurantById", query = "select r from Restaurant r left join fetch r.type left join fetch r.evaluations ev left join fetch ev.grades gr left join fetch r.address.city left join fetch gr.criteria cr where r.id = ?1")
-@NamedQuery(name = "researchRestaurantsByName", query = "select r from Restaurant r where r.name like ?1")
-@NamedQuery(name = "researchRestaurantsByCityName", query = "select r from Restaurant r where r.address.city.cityName like ?1")
-@NamedQuery(name = "researchRestaurantsByType", query = "select r from Restaurant r where r.type = ?1")
+@NamedQueries({
+        @NamedQuery(name = "Restaurant.researchAll",
+                query = "select new ch.hearc.ig.guideresto.business.RestaurantOverview(" +
+                        "r.id, " +
+                        "r.name, " +
+                        "r.address.street, " +
+                        "r.address.city.zipCode, " +
+                        "r.address.city.cityName) " +
+                        "from Restaurant r"),
+        @NamedQuery(name = "Restaurant.researchById",
+                query = "select r from Restaurant r " +
+                "left join fetch r.type " +
+                "left join fetch r.evaluations ev " +
+                "left join fetch ev.grades gr " +
+                "left join fetch r.address.city " +
+                "left join fetch gr.criteria cr " +
+                "where r.id = :id"),
+        @NamedQuery(name = "Restaurant.researchByName",
+                query = "select new ch.hearc.ig.guideresto.business.RestaurantOverview(" +
+                        "r.id, " +
+                        "r.name, " +
+                        "r.address.street, " +
+                        "r.address.city.zipCode, " +
+                        "r.address.city.cityName) " +
+                        "from Restaurant r " +
+                        "where r.name like :name"),
+        @NamedQuery(name = "Restaurant.researchByCityName",
+                query = "select new ch.hearc.ig.guideresto.business.RestaurantOverview(" +
+                        "r.id, " +
+                        "r.name, " +
+                        "r.address.street, " +
+                        "r.address.city.zipCode, " +
+                        "r.address.city.cityName) " +
+                        "from Restaurant r " +
+                        "where r.address.city.cityName like :cityName"),
+        @NamedQuery(name = "Restaurant.researchByRestaurantType",
+                query = "select new ch.hearc.ig.guideresto.business.RestaurantOverview(" +
+                        "r.id, " +
+                        "r.name, " +
+                        "r.address.street, " +
+                        "r.address.city.zipCode, " +
+                        "r.address.city.cityName) " +
+                        "from Restaurant r " +
+                        "where r.type = :type")
+})
 public class Restaurant implements IAmRestaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_RESTAURANTS")
-    @SequenceGenerator(name = "SEQ_RESTAURANTS", sequenceName = "SEQ_RESTAURANTS", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SEQ_RESTAURANTS", sequenceName = "SEQ_RESTAURANTS", allocationSize = 1)
     @Column(name="NUMERO", nullable = false, length = 10)
     private Integer id;
 
