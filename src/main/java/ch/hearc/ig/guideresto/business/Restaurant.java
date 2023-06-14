@@ -13,7 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "RESTAURANTS")
 @NamedQuery(name = "researchAllRestaurants", query = "select r from Restaurant r")
-@NamedQuery(name = "researchRestaurantById", query = "select r from Restaurant r left join fetch r.type left join fetch r.evaluations ev left join fetch ev.grades gr left join fetch r.address.city left join fetch gr.criteria cr where r.id = ?1")
+//@NamedQuery(name = "researchRestaurantById", query = "select r from Restaurant r left join fetch r.type left join fetch r.evaluations ev left join fetch ev.grades gr left join fetch r.address.city left join fetch gr.criteria cr where r.id = ?1")
+@NamedQuery(name = "researchRestaurantById", query = "select r from Restaurant r where r.id = ?1")
 @NamedQuery(name = "researchRestaurantsByName", query = "select r from Restaurant r where r.name like ?1")
 @NamedQuery(name = "researchRestaurantsByCityName", query = "select r from Restaurant r where r.address.city.cityName like ?1")
 @NamedQuery(name = "researchRestaurantsByType", query = "select r from Restaurant r where r.type = ?1")
@@ -35,7 +36,7 @@ public class Restaurant implements IAmRestaurant {
     @Column(name="SITE_WEB", nullable = false, length = 100)
     private String website;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Evaluation> evaluations;
 
     @Embedded
