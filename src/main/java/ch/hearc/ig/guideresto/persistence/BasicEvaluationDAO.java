@@ -21,4 +21,8 @@ public class BasicEvaluationDAO {
         getEntityManager().persist(basicEvaluation);
     }
 
+    public void delete(BasicEvaluation basicEvaluation) {
+        getEntityManager().remove(basicEvaluation);
+    }
+
 }

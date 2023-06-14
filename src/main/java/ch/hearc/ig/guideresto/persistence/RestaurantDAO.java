@@ -7,9 +7,7 @@ import ch.hearc.ig.guideresto.business.RestaurantOverview;
 import ch.hearc.ig.guideresto.business.RestaurantType;
 import ch.hearc.ig.guideresto.utils.RestaurantToRestaurantOverview;
 
-import javax.persistence.TypedQuery;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,10 +25,8 @@ public class RestaurantDAO {
     }
 
     public Set<RestaurantOverview> findAll () {
-        TypedQuery<Restaurant> query = getEntityManager().createNamedQuery("researchAllRestaurants", Restaurant.class);
-        List<Restaurant> restaurants = query.getResultList();
         Set<RestaurantOverview> restaurantOverviews = new HashSet<>();
-        for (Restaurant restaurant : restaurants) {
+        for (Restaurant restaurant : getEntityManager().createNamedQuery("researchAllRestaurants", Restaurant.class).getResultList()) {
             RestaurantOverview restaurantOverview = RestaurantToRestaurantOverview.convert(restaurant);
             restaurantOverviews.add(restaurantOverview);
         }
@@ -38,25 +34,30 @@ public class RestaurantDAO {
     }
 
     public Restaurant findById(int restaurantId) {
-        return getEntityManager().find(Restaurant.class, restaurantId);
+        return getEntityManager().createNamedQuery("researchRestaurantById", Restaurant.class)
+                .setParameter(1, restaurantId)
+                .getSingleResult();
     }
 
     public Set<Restaurant> findByName(String research) {
-        TypedQuery<Restaurant> query = getEntityManager().createNamedQuery("researchRestaurantsByName", Restaurant.class)
-                .setParameter(1, research + "%");
-        return query.getResultStream().collect(Collectors.toSet());
+        return getEntityManager().createNamedQuery("researchRestaurantsByName", Restaurant.class)
+                .setParameter(1, "%" + research + "%")
+                .getResultStream()
+                .collect(Collectors.toSet());
     }
 
     public Set<Restaurant> findByCityName(String research) {
-        TypedQuery<Restaurant> query = getEntityManager().createNamedQuery("researchRestaurantsByCityName", Restaurant.class)
-                .setParameter(1, research + "%");
-        return query.getResultStream().collect(Collectors.toSet());
+        return getEntityManager().createNamedQuery("researchRestaurantsByCityName", Restaurant.class)
+                .setParameter(1, "%" + research + "%")
+                .getResultStream()
+                .collect(Collectors.toSet());
     }
 
     public Set<Restaurant> findByRestaurantType(RestaurantType restaurantType) {
-        TypedQuery<Restaurant> query = getEntityManager().createNamedQuery("researchRestaurantsByType", Restaurant.class)
-                .setParameter(1, restaurantType);
-        return query.getResultStream().collect(Collectors.toSet());
+        return getEntityManager().createNamedQuery("researchRestaurantsByType", Restaurant.class)
+                .setParameter(1, restaurantType)
+                .getResultStream()
+                .collect(Collectors.toSet());
     }
 
     public void insert(Restaurant restaurant) {

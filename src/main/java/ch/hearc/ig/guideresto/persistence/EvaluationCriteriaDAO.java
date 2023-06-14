@@ -22,8 +22,9 @@ public class EvaluationCriteriaDAO {
     }
 
     public Set<EvaluationCriteria> findAll() {
-        TypedQuery<EvaluationCriteria> query = getEntityManager().createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class);
-        return query.getResultStream().collect(Collectors.toSet());
+        return getEntityManager().createNamedQuery("researchAllEvaluationCriteria", EvaluationCriteria.class)
+                .getResultStream()
+                .collect(Collectors.toSet());
     }
 
 }

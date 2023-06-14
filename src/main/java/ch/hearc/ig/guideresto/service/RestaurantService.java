@@ -7,19 +7,9 @@ import ch.hearc.ig.guideresto.business.EvaluationCriteria;
 import ch.hearc.ig.guideresto.business.Restaurant;
 import ch.hearc.ig.guideresto.business.RestaurantOverview;
 import ch.hearc.ig.guideresto.business.RestaurantType;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import ch.hearc.ig.guideresto.persistence.*;
-import ch.hearc.ig.guideresto.utils.RestaurantToRestaurantOverview;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class RestaurantService {
 

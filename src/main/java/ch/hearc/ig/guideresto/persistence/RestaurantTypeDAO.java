@@ -22,8 +22,9 @@ public class RestaurantTypeDAO {
     }
 
     public Set<RestaurantType> findAll() {
-        TypedQuery<RestaurantType> query = getEntityManager().createNamedQuery("researchAllRestaurantTypes", RestaurantType.class);
-        return query.getResultStream().collect(Collectors.toSet());
+        return getEntityManager().createNamedQuery("researchAllRestaurantTypes", RestaurantType.class)
+                .getResultStream()
+                .collect(Collectors.toSet());
     }
 
 }

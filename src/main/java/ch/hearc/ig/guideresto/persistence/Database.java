@@ -31,8 +31,8 @@ public class Database implements AutoCloseable {
             em.getTransaction().commit();
             return t;
         } finally {
-            //em.close();
-            //Database.em.remove();
+            em.close();
+            Database.em.remove();
         }
     }
 
@@ -44,8 +44,8 @@ public class Database implements AutoCloseable {
             function.run();
             em.getTransaction().commit();
         } finally {
-            //em.close();
-            //Database.em.remove();
+            em.close();
+            Database.em.remove();
         }
     }
 
